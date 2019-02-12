@@ -18,11 +18,12 @@ import (
 // ResolveTDOA runs the given Resolve TDOA test-suite.
 func ResolveTDOA(ts ResolveTDOATestSuite) error {
 	var backend geo.GeolocationServerServiceServer
-	if config.C.GeoServer.Backend.Name == "willy" {
-		backend = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
-	} else {
-		backend = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
-	}
+	switch config.C.GeoServer.Backend.Name {
+    case "willy":
+        backend = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
+	default:
+        backend = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
+    }
 	
 	w := csv.NewWriter(os.Stdout)
 	if err := w.Write([]string{
