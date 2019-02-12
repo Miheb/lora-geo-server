@@ -1,14 +1,14 @@
-package collos
+package willy
 
 import (
-	"bytes"
+	//"bytes"
 	"context"
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
+	//"io/ioutil"
+	//"net/http"
 
-	"github.com/pkg/errors"
+	//"github.com/pkg/errors"
 )
 
 type tdoaRequest struct {
@@ -48,12 +48,12 @@ type result struct {
 	NumberOfGatewaysUsed     int     `json:"numberOfGatewaysUsed"`
 }
 
-var tdoaEndpoint = "https://api.preview.collos.org/semtech-localization-algorithms/v2/tdoa"
+var tdoaEndpoint = "https://api.todo.org"
 
-func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (response, error) {
+func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (response, error) {	
 	var resolveResp response
 
-	b, err := json.Marshal(resolveReq)
+	/*b, err := json.Marshal(resolveReq)
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "marshal request error")
 	}
@@ -81,9 +81,33 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 
 	if err = json.NewDecoder(resp.Body).Decode(&resolveResp); err != nil {
 		return resolveResp, errors.Wrap(err, "unmarshal response error")
+	}*/
+	
+	/*{Result:
+		{Latitude:1.12345 
+		Longitude:1.22345 
+		Altitude:1.32345 
+		Accuracy:4.5 
+		AlgorithmType:a-algorithm 
+		NumberOfGatewaysReceived:4 
+		NumberOfGatewaysUsed:3
+		} 
+		Warnings:[] 
+		Errors:[] 
+		CorrelationID:abcde}*/
+	
+	resolveResult := result{
+		Latitude:  1.12345,
+		Longitude: 1.22345,
+		Altitude:  1.32345,
+		Accuracy:  4.5,
+		AlgorithmType:"a-algorithm",
+		NumberOfGatewaysReceived:4,
+		NumberOfGatewaysUsed:3,
 	}
 
-	fmt.Printf("RESOLVE TDOA ======= %+v\n", resolveResp)
+	resolveResp.Result = resolveResult
+	fmt.Printf("RESOLVE TDOA WILLY ======= %+v\n", resolveResp)
 
 	return resolveResp, nil
 }

@@ -1,4 +1,4 @@
-package collos
+package willy
 
 import (
 	"context"
@@ -16,20 +16,20 @@ import (
 	"github.com/brocaar/lorawan"
 )
 
-// API exposes the Collos geolocation- methods.
-type APICollos struct {
+// API exposes the Willy geolocation- methods.
+type APIWilly struct {
 	config Config
 }
 
 // NewAPI creates a new API.
-func NewAPICollos(c Config) geo.GeolocationServerServiceServer {
-	return &APICollos{
+func NewAPIWilly(c Config) geo.GeolocationServerServiceServer {
+	return &APIWilly{
 		config: c,
 	}
 }
 
 // ResolveTDOA resolves the location based on TDOA.
-func (a *APICollos) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest) (*geo.ResolveTDOAResponse, error) {
+func (a *APIWilly) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest) (*geo.ResolveTDOAResponse, error) {
 	if req.FrameRxInfo == nil {
 		return nil, grpc.Errorf(codes.InvalidArgument, "frame_rx_info must not be nil")
 	}
@@ -148,4 +148,5 @@ func (a *APICollos) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest
 			},
 		},
 	}, nil
+
 }

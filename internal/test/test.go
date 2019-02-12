@@ -10,13 +10,20 @@ import (
 	"strconv"
 
 	"github.com/brocaar/lora-geo-server/internal/backends/collos"
+	"github.com/brocaar/lora-geo-server/internal/backends/willy"
 	"github.com/brocaar/lora-geo-server/internal/config"
+	"github.com/brocaar/loraserver/api/geo"
 )
 
 // ResolveTDOA runs the given Resolve TDOA test-suite.
 func ResolveTDOA(ts ResolveTDOATestSuite) error {
-	backend := collos.NewAPI(config.C.GeoServer.Backend.Collos)
-
+	var backend geo.GeolocationServerServiceServer
+	if config.C.GeoServer.Backend.Name == "willy" {
+		backend = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
+	} else {
+		backend = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
+	}
+	
 	w := csv.NewWriter(os.Stdout)
 	if err := w.Write([]string{
 		"id",

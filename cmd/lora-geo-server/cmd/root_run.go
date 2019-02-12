@@ -19,6 +19,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"github.com/brocaar/lora-geo-server/internal/backends/collos"
+	"github.com/brocaar/lora-geo-server/internal/backends/willy"
 	"github.com/brocaar/lora-geo-server/internal/config"
 	"github.com/brocaar/loraserver/api/geo"
 )
@@ -47,7 +48,14 @@ func run(cmd *cobra.Command, args []string) error {
 		opts = append(opts, grpc.Creds(creds))
 	}
 	gs := grpc.NewServer(opts...)
-	geoAPI := collos.NewAPI(config.C.GeoServer.Backend.Collos)
+
+	var geoAPI geo.GeolocationServerServiceServer
+	if config.C.GeoServer.Backend.Name == "willy" {
+		geoAPI = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
+	} else {
+		geoAPI = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
+	}
+
 	geo.RegisterGeolocationServerServiceServer(gs, geoAPI)
 
 	ln, err := net.Listen("tcp", config.C.GeoServer.API.Bind)

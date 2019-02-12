@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/brocaar/lora-geo-server/internal/backends/collos"
+	"github.com/brocaar/lora-geo-server/internal/backends/willy"
 )
 
 // Version defines the LoRa Geo Server version.
@@ -24,6 +25,7 @@ type Config struct {
 		Backend struct {
 			Name   string        `mapstructure:"name"`
 			Collos collos.Config `mapstructure:"collos"`
+			Willy  willy.Config  `mapstructure:"willy"`
 		} `mapstructure:"backend"`
 	} `mapstructure:"geo_server"`
 }
