@@ -3,7 +3,6 @@ package collos
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -310,16 +309,6 @@ func (ts *CollosTestSuite) TestResolveTDOA() {
 			},
 		},
 	}
-
-	data, err := json.Marshal(ts)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if data != nil {
-		fmt.Printf("%+v\n",ts)
-		fmt.Printf("%s\n", data)
-	}
-	//fmt.Printf("%+v\n",testTable)
 
 	for _, test := range testTable {
 		ts.T().Run(test.Name, func(t *testing.T) {

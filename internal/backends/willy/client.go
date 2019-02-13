@@ -1,14 +1,14 @@
 package willy
 
 import (
-	//"bytes"
+	"bytes"
 	"context"
-	//"encoding/json"
+	"encoding/json"
 	"fmt"
-	//"io/ioutil"
-	//"net/http"
+	"io/ioutil"
+	"net/http"
 
-	//"github.com/pkg/errors"
+	"github.com/pkg/errors"
 )
 
 type tdoaRequest struct {
@@ -48,21 +48,22 @@ type result struct {
 	NumberOfGatewaysUsed     int     `json:"numberOfGatewaysUsed"`
 }
 
-var tdoaEndpoint = "https://api.todo.org"
+var tdoaEndpoint = "http://geo-api:8081/CalculTriloc"
 
 func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (response, error) {	
 	var resolveResp response
 
-	/*b, err := json.Marshal(resolveReq)
+	b, err := json.Marshal(resolveReq)
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "marshal request error")
 	}
+
 	req, err := http.NewRequest("POST", tdoaEndpoint, bytes.NewReader(b))
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "new request error")
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Ocp-Apim-Subscription-Key", config.SubscriptionKey)
+	//req.Header.Set("Ocp-Apim-Subscription-Key", config.SubscriptionKey)
 
 	reqCTX, cancel := context.WithTimeout(ctx, config.RequestTimeout)
 	defer cancel()
@@ -79,34 +80,22 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 		return resolveResp, fmt.Errorf("expected 200, got: %d (%s)", resp.StatusCode, string(b))
 	}
 
+	fmt.Printf("RESOLVE TDOA WILLY ======= %+v\n", tdoaEndpoint)
 	if err = json.NewDecoder(resp.Body).Decode(&resolveResp); err != nil {
 		return resolveResp, errors.Wrap(err, "unmarshal response error")
-	}*/
-	
-	/*{Result:
-		{Latitude:1.12345 
-		Longitude:1.22345 
-		Altitude:1.32345 
-		Accuracy:4.5 
-		AlgorithmType:a-algorithm 
-		NumberOfGatewaysReceived:4 
-		NumberOfGatewaysUsed:3
-		} 
-		Warnings:[] 
-		Errors:[] 
-		CorrelationID:abcde}*/
+	}
 	
 	resolveResult := result{
 		Latitude:  1.12345,
-		Longitude: 1.22345,
-		Altitude:  1.32345,
-		Accuracy:  4.5,
-		AlgorithmType:"a-algorithm",
-		NumberOfGatewaysReceived:4,
-		NumberOfGatewaysUsed:3,
+	    Longitude: 1.22345,
+	    Altitude:  1.32345,
+	    Accuracy:  4.5,
+	    AlgorithmType:"a-algorithm",
+	    NumberOfGatewaysReceived:4,
+	    NumberOfGatewaysUsed:3,
 	}
-
 	resolveResp.Result = resolveResult
+
 	fmt.Printf("RESOLVE TDOA WILLY ======= %+v\n", resolveResp)
 
 	return resolveResp, nil

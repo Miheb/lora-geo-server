@@ -2,9 +2,14 @@ version: "3"
 
 services:
   geoserver:
-    image: khbx/lora_geo:latest
+    image: khbx/lora_geo_dev:latest
+    container_name: lora_geo_dev
+    stdin_open: true
+    tty: true
+    volumes:
+        - .:/go/src/github.com/brocaar/lora-geo-server
 
   geo-api:
     image: theo024/geo-api:latest
     ports:
-      - "8080:8080"
+      - "8081:8081"

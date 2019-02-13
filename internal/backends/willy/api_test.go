@@ -2,8 +2,7 @@ package willy
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
+	//"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -44,7 +43,8 @@ func (ts *WillyTestSuite) SetupSuite() {
 		},
 	}
 
-	tdoaEndpoint = ts.apiServer.URL
+	//fmt.Printf("ts.apiServer.URL %+v\n", ts.apiServer.URL)
+	//tdoaEndpoint = ts.apiServer.URL
 }
 
 func (ts *WillyTestSuite) TearDownSuite() {
@@ -310,16 +310,6 @@ func (ts *WillyTestSuite) TestResolveTDOA() {
 			},
 		},
 	}
-
-	data, err := json.Marshal(ts)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if data != nil {
-		fmt.Printf("WILLLLLLLLLLLLLLLLLLLLLLLLLLLLLY%+v\n",ts)
-		fmt.Printf("%s\n", data)
-	}
-	//fmt.Printf("%+v\n",testTable)
 
 	for _, test := range testTable {
 		ts.T().Run(test.Name, func(t *testing.T) {
