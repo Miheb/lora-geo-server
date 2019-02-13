@@ -1,11 +1,13 @@
 package willy
 
+// TODO: in the future use local httpserver test 
+// For now, keep using our local backend server
 import (
 	"context"
 	//"encoding/json"
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
+	//"io/ioutil"
+	//"net/http"
+	//"net/http/httptest"
 	"testing"
 	"time"
 
@@ -27,7 +29,7 @@ type WillyTestSuite struct {
 
 	apiResponse string
 	apiRequest  string
-	apiServer   *httptest.Server
+	//apiServer   *httptest.Server
 
 	client geo.GeolocationServerServiceServer
 }
@@ -35,20 +37,19 @@ type WillyTestSuite struct {
 func (ts *WillyTestSuite) SetupSuite() {
 	log.SetLevel(log.ErrorLevel)
 
-	ts.apiServer = httptest.NewServer(http.HandlerFunc(ts.apiHandler))
+	//ts.apiServer = httptest.NewServer(http.HandlerFunc(ts.apiHandler))
 
 	ts.client = &APIWilly{
 		config: Config{
 			RequestTimeout: time.Second,
 		},
 	}
-
-	//fmt.Printf("ts.apiServer.URL %+v\n", ts.apiServer.URL)
-	//tdoaEndpoint = ts.apiServer.URL
+	
+	// tdoaEndpoint = ts.apiServer.URL
 }
 
 func (ts *WillyTestSuite) TearDownSuite() {
-	ts.apiServer.Close()
+	//ts.apiServer.Close()
 }
 
 func (ts *WillyTestSuite) TestResolveTDOA() {
@@ -321,9 +322,7 @@ func (ts *WillyTestSuite) TestResolveTDOA() {
 			if test.ExpectedResponse != nil {
 				assert.Equal(test.ExpectedResponse, resp)
 			}
-
-			// TODO : would be necessary once the request is made from an actual
-			// server
+			
 			/*if test.ExpectedRequest != nil {
 				var req tdoaRequest
 				assert.NoError(json.Unmarshal([]byte(ts.apiRequest), &req))
@@ -333,14 +332,14 @@ func (ts *WillyTestSuite) TestResolveTDOA() {
 	}
 }
 
-func (ts *WillyTestSuite) apiHandler(w http.ResponseWriter, r *http.Request) {
+/*func (ts *WillyTestSuite) apiHandler(w http.ResponseWriter, r *http.Request) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		panic(err)
 	}
 	ts.apiRequest = string(b)
 	w.Write([]byte(ts.apiResponse))
-}
+}*/
 
 func TestWilly(t *testing.T) {
 	suite.Run(t, new(WillyTestSuite))

@@ -53,7 +53,6 @@ var tdoaEndpoint = "https://api.preview.collos.org/semtech-localization-algorith
 func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (response, error) {
 	var resolveResp response
 
-	fmt.Printf("RESOLVE TDOA COLLOS ======= %s\n", tdoaEndpoint)
 	b, err := json.Marshal(resolveReq)
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "marshal request error")
@@ -79,8 +78,6 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 		b, _ := ioutil.ReadAll(resp.Body)
 		return resolveResp, fmt.Errorf("expected 200, got: %d (%s)", resp.StatusCode, string(b))
 	}
-
-	fmt.Printf("RESOLVE TDOA COLLOS ======= %+v\n", tdoaEndpoint)
 
 	if err = json.NewDecoder(resp.Body).Decode(&resolveResp); err != nil {
 		return resolveResp, errors.Wrap(err, "unmarshal response error")

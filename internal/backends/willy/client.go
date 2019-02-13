@@ -63,6 +63,8 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 		return resolveResp, errors.Wrap(err, "new request error")
 	}
 	req.Header.Set("Content-Type", "application/json")
+	
+	//TODO: add a subscription key to our backend
 	//req.Header.Set("Ocp-Apim-Subscription-Key", config.SubscriptionKey)
 
 	reqCTX, cancel := context.WithTimeout(ctx, config.RequestTimeout)
@@ -80,23 +82,11 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 		return resolveResp, fmt.Errorf("expected 200, got: %d (%s)", resp.StatusCode, string(b))
 	}
 
-	fmt.Printf("RESOLVE TDOA WILLY ======= %+v\n", tdoaEndpoint)
 	if err = json.NewDecoder(resp.Body).Decode(&resolveResp); err != nil {
 		return resolveResp, errors.Wrap(err, "unmarshal response error")
-	}
-	
-	resolveResult := result{
-		Latitude:  1.12345,
-	    Longitude: 1.22345,
-	    Altitude:  1.32345,
-	    Accuracy:  4.5,
-	    AlgorithmType:"a-algorithm",
-	    NumberOfGatewaysReceived:4,
-	    NumberOfGatewaysUsed:3,
-	}
-	resolveResp.Result = resolveResult
+	}	
 
-	fmt.Printf("RESOLVE TDOA WILLY ======= %+v\n", resolveResp)
+	fmt.Printf("TriLoc Resolve Service: %+v\n", resolveResp)
 
 	return resolveResp, nil
 }
