@@ -30,6 +30,7 @@ func NewAPIWilly(c Config) geo.GeolocationServerServiceServer {
 
 // ResolveTDOA resolves the location based on TDOA.
 func (a *APIWilly) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest) (*geo.ResolveTDOAResponse, error) {
+
 	if req.FrameRxInfo == nil {
 		return nil, grpc.Errorf(codes.InvalidArgument, "frame_rx_info must not be nil")
 	}
@@ -50,6 +51,7 @@ func (a *APIWilly) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest)
 			continue
 		}
 
+		/* TODO: BYPASS FineTimestamp For Geoloc
 		if rxInfo.FineTimestampType == gw.FineTimestampType_NONE {
 			log.WithFields(log.Fields{
 				"dev_eui":             devEUI,
@@ -57,7 +59,7 @@ func (a *APIWilly) ResolveTDOA(ctx context.Context, req *geo.ResolveTDOARequest)
 				"gateway_id":          gatewayID,
 			}).Warning("unsupported fine-typestamp type")
 			continue
-		}
+		}*/
 
 		rx := loRaWANRX{
 			AntennaID: int(rxInfo.Antenna),

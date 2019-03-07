@@ -49,12 +49,15 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 	gs := grpc.NewServer(opts...)
 
+	log.WithFields(log.Fields{
+		"backend": config.C.GeoServer.Backend.Name,
+	}).Info("choosing geo api backend")
 	var geoAPI geo.GeolocationServerServiceServer
 	switch config.C.GeoServer.Backend.Name {
     case "willy":
-        geoAPI = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
+		geoAPI = willy.NewAPIWilly(config.C.GeoServer.Backend.Willy)
 	default:
-        geoAPI = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
+		geoAPI = collos.NewAPICollos(config.C.GeoServer.Backend.Collos)
     }
 
 	geo.RegisterGeolocationServerServiceServer(gs, geoAPI)
