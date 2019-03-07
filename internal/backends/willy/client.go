@@ -54,10 +54,6 @@ var tdoaEndpoint = "http://geo-api:8081/tdoa"
 func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (response, error) {	
 	var resolveResp response
 
-	log.WithFields(log.Fields{
-        "resolveReq": resolveReq,
-	}).Info("resolve tdoa")
-
 	b, err := json.Marshal(resolveReq)
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "marshal request error")
