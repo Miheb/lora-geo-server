@@ -1,5 +1,0 @@
-FROM alpine:latest AS production
-
-WORKDIR /root/
-COPY build/lora-geo-server .
-ENTRYPOINT ["./lora-geo-server"]
