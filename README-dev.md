@@ -5,7 +5,7 @@ docker run -d -it --volume=$PWD:/go/src/github.com/brocaar/lora-geo-server --nam
 sudo docker exec lora_geo_dev /bin/sh -c "make dev-requirements && make requirements"
 
 # Compile and recreate imag
-sudo docker exec lora_geo_dev /bin/sh -c "make clean && make build" && sudo docker build -t theo024/lora_geo -f Dockerfile-dev .
+sudo docker exec lora_geo_dev /bin/sh -c "make clean && make build" && sudo docker build -t theo024/lora_geo -f Dockerfile-copy .
 
 # Image was built using
 docker build -f Dockerfile-devel -t khbx/lora_geo_dev .
