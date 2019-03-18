@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/pkg/errors"
 )
 
@@ -65,13 +64,10 @@ func resolveTDOA(ctx context.Context, config Config, resolveReq tdoaRequest) (re
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	//TODO: add a subscription key to our backend
-	//req.Header.Set("Ocp-Apim-Subscription-Key", config.SubscriptionKey)
+	reqCTX, cancel := context.WithTimeout(ctx, config.RequestTimeout*1000000)
+	defer cancel()
 
-	//reqCTX, cancel := context.WithTimeout(ctx, config.RequestTimeout*1000000)
-	//defer cancel()
-
-	//req = req.WithContext(reqCTX)
+	req = req.WithContext(reqCTX)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return resolveResp, errors.Wrap(err, "http request error")
